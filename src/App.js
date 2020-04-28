@@ -1,9 +1,17 @@
 import React from 'react';
+import { connect } from 'react-redux';
 import logo from './logo.svg';
 import './App.css';
+import { useHistory } from 'react-router-dom'
+import { render } from '@testing-library/react';
 
-function App() {
-  return (
+class App extends React.Component {
+
+  render() {
+    if (this.props.auth.credentials.token === '') {
+      this.props.history.push('/login')
+    }
+    return (
     <div className="App">
       <header className="App-header">
         <img src={logo} className="App-logo" alt="logo" />
@@ -21,6 +29,19 @@ function App() {
       </header>
     </div>
   );
+  }
 }
 
-export default App;
+
+function mapStateToProps(state) {
+  return {
+      auth : state.authentificationReducer,
+  };
+}
+
+const mapDispatchToProps = function (dispatch) {
+    return {
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
