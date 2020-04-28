@@ -1,11 +1,8 @@
 import React from 'react';
 import { connect } from 'react-redux';
-import logo from './logo.svg';
 import './App.css';
-import { useHistory } from 'react-router-dom'
-import { render } from '@testing-library/react';
-import { ListGroup } from 'react-bootstrap'
-import { getLogs } from './actions/systemInfoActions';
+import { ListGroup, Container, Row, Col } from 'react-bootstrap'
+import { getLogs, getSysName } from './actions/systemInfoActions';
 
 class App extends React.Component {
 
@@ -13,7 +10,10 @@ class App extends React.Component {
     if (this.props.auth.credentials.token === '') {
       this.props.history.push('/login')
     }
-    this.props.getLogs(this.props.auth.credentials.token)
+    else {
+      this.props.getLogs(this.props.auth.credentials.token)
+      this.props.getSysName(this.props.auth.credentials.token)
+    }
   }
 
   displayList(truc) {
@@ -27,14 +27,25 @@ class App extends React.Component {
         </div>
       );
     }
-    
+    else {
+      return(
+        <div></div>
+      )
+    }
   }
 
   render() {
     return (
-    <ListGroup>
-      {this.displayList(this.props.systeminfo.logs)}
-    </ListGroup>
+      <Container>
+        <Row className="row">
+          <Col xs={12}>
+            <h3>{this.props.systeminfo.name}</h3>
+            <ListGroup>
+              {this.displayList(this.props.systeminfo.logs)}
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
   );
   }
 }
@@ -49,7 +60,8 @@ function mapStateToProps(state) {
 
 const mapDispatchToProps = function (dispatch) {
     return {
-      getLogs: (token) => dispatch(getLogs(token))
+      getLogs: (token) => dispatch(getLogs(token)),
+      getSysName: (token) => dispatch(getSysName(token))
     }
 };
 
