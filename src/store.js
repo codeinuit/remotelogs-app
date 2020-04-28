@@ -2,7 +2,7 @@ import { createStore, applyMiddleware } from 'redux';
 import thunk from 'redux-thunk';
 import rootReducer from './reducers/rootReducer';
 import createSagaMiddleware from 'redux-saga';
-import watchEveryAuthentification from './saga/authentificationSaga';
+import rootSaga from './saga/rootSaga';
 
 const sagaMiddleware = createSagaMiddleware();
 const store = createStore(
@@ -11,7 +11,7 @@ const store = createStore(
 );
 
 export default function configureStore() {
-    sagaMiddleware.run(watchEveryAuthentification)
+    sagaMiddleware.run(rootSaga)
     store.subscribe(() => {
         console.log(store.getState())
     });

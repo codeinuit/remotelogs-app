@@ -4,30 +4,37 @@ import logo from './logo.svg';
 import './App.css';
 import { useHistory } from 'react-router-dom'
 import { render } from '@testing-library/react';
+import { ListGroup } from 'react-bootstrap'
+import { getLogs } from './actions/systemInfoActions';
 
 class App extends React.Component {
 
-  render() {
+  componentDidMount() {
     if (this.props.auth.credentials.token === '') {
       this.props.history.push('/login')
     }
+    this.props.getLogs(this.props.auth.credentials.token)
+  }
+
+  displayList(truc) {
+    if (typeof truc !== 'undefined')
+    {
+      return (
+        <div>
+          {truc.map((item, index) => (
+            <ListGroup.Item key={index}>{item}</ListGroup.Item>
+          ))}
+        </div>
+      );
+    }
+    
+  }
+
+  render() {
     return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <ListGroup>
+      {this.displayList(this.props.systeminfo.logs)}
+    </ListGroup>
   );
   }
 }
@@ -35,12 +42,14 @@ class App extends React.Component {
 
 function mapStateToProps(state) {
   return {
-      auth : state.authentificationReducer,
+      systeminfo : state.systemInfoReducer,
+      auth : state.authentificationReducer
   };
 }
 
 const mapDispatchToProps = function (dispatch) {
     return {
+      getLogs: (token) => dispatch(getLogs(token))
     }
 };
 
