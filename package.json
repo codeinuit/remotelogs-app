@@ -8,6 +8,9 @@
     "@testing-library/user-event": "^7.1.2",
     "apisauce": "^1.1.1",
     "bootstrap": "^4.4.1",
+    "jest": "^25.5.0",
+    "jest-cli": "^25.5.0",
+    "puppeteer": "^3.0.2",
     "react": "^16.13.1",
     "react-bootstrap": "^1.0.1",
     "react-dom": "^16.13.1",
@@ -22,7 +25,8 @@
     "start": "react-scripts start",
     "build": "react-scripts build",
     "test": "react-scripts test",
-    "eject": "react-scripts eject"
+    "eject": "react-scripts eject",
+    "jest": "jest"
   },
   "eslintConfig": {
     "extends": "react-app"
