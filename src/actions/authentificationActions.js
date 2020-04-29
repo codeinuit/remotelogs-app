@@ -12,12 +12,13 @@ export function login(username, password) {
     };
 }
 
-export function loginSuccess(token) {
+export function loginSuccess(token, user) {
     return {
         type: AUTH_LOGIN_SUCCESS,
         logged: true,
         credentials: {
-            token: token
+            token: token,
+            username: user
         }
     };
 }

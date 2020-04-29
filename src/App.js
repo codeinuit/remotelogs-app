@@ -40,6 +40,7 @@ class App extends React.Component {
         <Row className="row">
           <Col xs={12}>
             <h3>{this.props.systeminfo.name}</h3>
+            <h4> Connected as {this.props.auth.credentials.username}</h4>
             <ListGroup>
               {this.displayList(this.props.systeminfo.logs)}
             </ListGroup>

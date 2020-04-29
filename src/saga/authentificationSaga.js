@@ -21,7 +21,7 @@ function* login(parameters) {
 
        if (response.status === 200) 
        {
-          yield put(loginSuccess(response.data.token));
+          yield put(loginSuccess(response.data.token, parameters.credentials.username));
        }
        else
           yield put(loginFailed(response.data.error))
