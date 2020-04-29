@@ -1,26 +1,69 @@
 import React from 'react';
-import logo from './logo.svg';
+import { connect } from 'react-redux';
 import './App.css';
+import { ListGroup, Container, Row, Col } from 'react-bootstrap'
+import { getLogs, getSysName } from './actions/systemInfoActions';
 
-function App() {
-  return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+class App extends React.Component {
+
+  componentDidMount() {
+    if (this.props.auth.credentials.token === '') {
+      this.props.history.push('/login')
+    }
+    else {
+      this.props.getLogs(this.props.auth.credentials.token)
+      this.props.getSysName(this.props.auth.credentials.token)
+    }
+  }
+
+  displayList(truc) {
+    if (typeof truc !== 'undefined')
+    {
+      return (
+        <div>
+          {truc.map((item, index) => (
+            <ListGroup.Item key={index}>{item}</ListGroup.Item>
+          ))}
+        </div>
+      );
+    }
+    else {
+      return(
+        <div></div>
+      )
+    }
+  }
+
+  render() {
+    return (
+      <Container>
+        <Row className="row">
+          <Col xs={12}>
+            <h3>{this.props.systeminfo.name}</h3>
+            <h4> Connected as {this.props.auth.credentials.username}</h4>
+            <ListGroup>
+              {this.displayList(this.props.systeminfo.logs)}
+            </ListGroup>
+          </Col>
+        </Row>
+      </Container>
   );
+  }
 }
 
-export default App;
+
+function mapStateToProps(state) {
+  return {
+      systeminfo : state.systemInfoReducer,
+      auth : state.authentificationReducer
+  };
+}
+
+const mapDispatchToProps = function (dispatch) {
+    return {
+      getLogs: (token) => dispatch(getLogs(token)),
+      getSysName: (token) => dispatch(getSysName(token))
+    }
+};
+
+export default connect(mapStateToProps, mapDispatchToProps)(App);
